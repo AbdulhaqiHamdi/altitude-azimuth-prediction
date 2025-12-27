@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Sensor Dashboard</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary-blue': '#1e40af',
+              'secondary-blue': '#3b82f6',
+              'light-bg': '#f3f4f6',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-light-bg min-h-screen font-sans antialiased">
+
+<div id="app" class="flex min-h-screen">
+  <aside class="bg-primary-blue text-white w-64 p-6">
+    <h1 class="text-2xl font-bold mb-8">IoT Monitor</h1>
+    <nav class="space-y-3">
+      <div>
+        <a href="#" data-page="dashboard" class="nav-link active-page">Dashboard</a>
+      </div>
+      <div>
+        <a href="#" data-page="info" class="nav-link">System Info</a>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="flex-1 p-8 overflow-y-auto">
+    <h2 id="page-title" class="text-3xl font-bold mb-6">Dashboard</h2>
+
+    <!-- Data Source Selector -->
+    <section id="dashboard-page" class="space-y-6">
+      <div class="mb-6 flex items-center gap-4">
+        <label for="data-mode" class="text-sm font-semibold text-gray-700">
+          Data Source:
+        </label>
+
+        <select
+          id="data-mode"
+          class="px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary-blue"
+        >
+          <option value="simulation">Simulation Data</option>
+          <option value="csv">CSV Replay Data</option>
+        </select>
+
+        <span class="text-sm text-gray-500 italic">
+          Switch data source without reloading
+        </span>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Temperature Card -->
+        <div class="card bg-white p-6 rounded-xl shadow border-l-4 border-red-500">
+          <h3 class="text-lg font-semibold">Temperature</h3>
+          <p>
+            <span id="temperature-value" class="text-5xl font-bold">--</span> °C
+          </p>
+          <p id="temp-status" class="text-sm text-gray-500">Awaiting data...</p>
+        </div>
+
+        <!-- Humidity Card -->
+        <div class="card bg-white p-6 rounded-xl shadow border-l-4 border-blue-500">
+          <h3 class="text-lg font-semibold">Humidity</h3>
+          <p>
+            <span id="humidity-value" class="text-5xl font-bold">--</span> %
+          </p>
+          <p id="humid-status" class="text-sm text-gray-500">Awaiting data...</p>
+        </div>
+
+        <!-- Current Card -->
+        <div class="card bg-white p-6 rounded-xl shadow border-l-4 border-green-500">
+          <h3 class="text-lg font-semibold">Current</h3>
+          <p>
+            <span id="current-value" class="text-5xl font-bold">--</span> A
+          </p>
+          <p id="current-status" class="text-sm text-gray-500">
+            Awaiting data...
+          </p>
+        </div>
+      </div>
+
+      <p class="text-sm text-gray-500">Last Update: <span id="last-update">N/A</span></p>
+
+      <!-- Environmental Data Charts -->
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-semibold mb-2">Temperature Trend</h3>
+          <canvas id="temperatureChart"></canvas>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-semibold mb-2">Humidity Trend</h3>
+          <canvas id="humidityChart"></canvas>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-semibold mb-2">Current Trend</h3>
+          <canvas id="currentChart"></canvas>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-semibold mb-2">Altitude Prediction</h3>
+          <canvas id="altitudeChart"></canvas>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-semibold mb-2">Azimuth Prediction</h3>
+          <canvas id="azimuthChart"></canvas>
+        </div>
+      </div>
+    </section>
+    <section id="info-page" class="hidden space-y-6">
+
+      <!-- System Overview -->
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="text-2xl font-bold text-primary-blue mb-3">
+          System Overview
+        </h3>
+        <p class="text-gray-700 leading-relaxed">
+          This web-based dashboard is part of an Internet of Things (IoT) and
+          Artificial Intelligence (AI) system designed to monitor environmental
+          parameters and predict solar position angles. The system integrates
+          sensor-based data acquisition, machine learning models, and real-time
+          visualization.
+        </p>
+      </div>
+
+      <!-- System Architecture -->
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="text-xl font-semibold mb-4 text-gray-800">
+          System Architecture
+        </h3>
+
+        <ol class="list-decimal list-inside space-y-2 text-gray-700">
+          <li>
+            <strong>IoT Layer:</strong> Environmental data such as temperature,
+            humidity, and electrical current are collected using sensors connected
+            to an ESP32 microcontroller.
+          </li>
+          <li>
+            <strong>Data Layer:</strong> Sensor readings are transmitted over Wi-Fi
+            and stored in a cloud database or prepared as historical datasets
+            (CSV-based replay).
+          </li>
+          <li>
+            <strong>AI Layer:</strong> Long Short-Term Memory (LSTM) and Random
+            Forest models process the data to predict solar altitude and azimuth
+            angles.
+          </li>
+          <li>
+            <strong>Visualization Layer:</strong> This dashboard displays both
+            sensor data and AI predictions in time-series form.
+          </li>
+        </ol>
+      </div>
+
+      <!-- Data Description -->
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="text-xl font-semibold mb-4 text-gray-800">
+          Data Description
+        </h3>
+
+        <ul class="list-disc list-inside space-y-2 text-gray-700">
+          <li><strong>Temperature (°C):</strong> Ambient air temperature measured near the solar panel.</li>
+          <li><strong>Humidity (%):</strong> Relative humidity of the surrounding environment.</li>
+          <li><strong>Current (A):</strong> Electrical current generated by the solar panel.</li>
+          <li><strong>Altitude Angle (°):</strong> Predicted elevation angle of the Sun.</li>
+          <li><strong>Azimuth Angle (°):</strong> Predicted horizontal direction of the Sun.</li>
+        </ul>
+      </div>
+
+      <!-- AI Models -->
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="text-xl font-semibold mb-4 text-gray-800">
+          Artificial Intelligence Models
+        </h3>
+
+        <p class="text-gray-700 leading-relaxed mb-3">
+          Two machine learning models are employed to predict solar position angles:
+        </p>
+
+        <ul class="list-disc list-inside space-y-2 text-gray-700">
+          <li>
+            <strong>LSTM (Long Short-Term Memory):</strong>
+            A recurrent neural network designed to capture temporal dependencies
+            in time-series environmental data.
+          </li>
+          <li>
+            <strong>Random Forest:</strong>
+            An ensemble learning method capable of modeling non-linear relationships
+            between environmental variables and solar angles.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Data Source Mode -->
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="text-xl font-semibold mb-4 text-gray-800">
+          Data Source Mode
+        </h3>
+
+        <p class="text-gray-700 leading-relaxed">
+          For demonstration and development purposes, this dashboard can operate
+          using pre-recorded CSV data to simulate real-time data streaming.
+          The same visualization pipeline is designed to be directly connected
+          to a live IoT backend and AI inference service.
+        </p>
+      </div>
+
+      <!-- Academic Note -->
+      <div class="bg-white p-6 rounded-xl shadow border-l-4 border-secondary-blue">
+        <h3 class="text-xl font-semibold mb-3 text-secondary-blue">
+          Academic Note
+        </h3>
+        <p class="text-gray-700 leading-relaxed">
+          This dashboard is developed as part of an undergraduate thesis in physics
+          instrumentation and renewable energy systems. The focus is placed on
+          system integration, data-driven modeling, and interpretability of AI-based
+          predictions rather than purely astronomical calculations.
+        </p>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script src="index.js"></script>
+</body>
+</html>
