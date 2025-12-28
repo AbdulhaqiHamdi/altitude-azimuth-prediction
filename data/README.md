@@ -4,8 +4,8 @@ This directory contains datasets used for development, testing, evaluation, and 
 
 The datasets are organized to support:
 - Model training and evaluation (LSTM and Random Forest)
-- Web-based dashboard visualization (CSV replay mode)
-- Reproducible experiments for academic purposes
+<!-- - Web-based dashboard visualization (CSV replay mode) -->
+<!-- - Reproducible experiments for academic purposes -->
 
 ---
 
@@ -27,16 +27,16 @@ This data represents direct environmental measurements and is used as ground tru
 - Website: https://open-meteo.com/
 
 Open-Meteo provides historical weather data aggregated from numerical weather prediction models, weather stations, satellite observations, and radar data.  
-The API offers high temporal resolution (hourly) data and enables coverage of regions without direct weather station availability.
+The API offers high temporal resolution (hourly) data and enables coverage of regions.
 
 ---
 
 ## 📁 File Description
 
 ### `dummy_data.csv`
-- Dataset used for **dashboard replay mode**
+<!-- - Dataset used for **dashboard replay mode** -->
 - Contains environmental variables and corresponding model predictions
-- Simulates real-time data streaming for visualization and demonstration purposes
+<!-- - Simulates real-time data streaming for visualization and demonstration purposes -->
 - Data origin: Open-Meteo Historical Weather API (processed)
 
 ---
@@ -46,8 +46,8 @@ The API offers high temporal resolution (hourly) data and enables coverage of re
 - Contains:
   - Temperature (°C)
   - Relative Humidity (%)
-- Sensor: DHT11
-- Used for validating system behavior against real sensor measurements
+  - Current (A)
+- Sensor: DHT11 (Temperature & Humidity), AC712 (Current)
 
 ---
 
@@ -79,23 +79,23 @@ This script represents the data processing pipeline prior to model development.
 
 ---
 
-### `pull_request.csv`
-- Dataset generated from Open-Meteo Historical Weather API requests
+### `pull_request.py`
+- Python script used for fetching data from Open-Meteo Historical Weather API
 - Contains raw hourly weather data retrieved programmatically
 - Serves as an intermediate data source before preprocessing
 - Used to produce `hourly_data.csv` after data cleaning and formatting
 
-This dataset represents the initial output of the data acquisition process prior to feature engineering and model preparation.
+This script represents the initial output of the data acquisition process prior to feature engineering and model preparation.
 
 ---
 
-## 📌 Notes
+<!-- ## 📌 Notes
 
 - CSV files in this directory are intended for **offline analysis and visualization**.
 - The web dashboard loads CSV files using the Fetch API; therefore, the project must be served via an HTTP server (local or remote).
 - Some prediction columns may contain missing values (`NaN`) at the beginning of sequences due to windowing requirements in LSTM models.
 
----
+--- -->
 
 ## 🎓 Academic Context
 

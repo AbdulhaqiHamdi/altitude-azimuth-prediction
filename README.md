@@ -1,28 +1,32 @@
 # IoT-Based Temperature and Humidity Data Acquisition System for Solar Tracking Optimization Using Artificial Intelligence
 
-This repository contains the implementation of an Internet of Things (IoT)-based environmental data acquisition system and Artificial Intelligence (AI) models to support solar tracking optimization.  
+This repository contains the implementation of an Internet of Things (IoT)-based environmental data acquisition system and Artificial Intelligence (AI) models to predict a sun path.
+  
 The system integrates real-time sensor data, cloud-based storage, machine learning models, and a web-based dashboard to predict the Sun’s altitude and azimuth angles.
 
-This work supports the undergraduate thesis:
+This work is a documentation of my undergraduate physics thesis:
 
-**“Implementation of an IoT-Based Temperature and Humidity Data Acquisition System for Solar Tracking Optimization Using Artificial Intelligence.”**
+**“IoT-Based Temperature and Humidity Data Acquisition System for Steering the Position of Solar Panels Based on Artificial Intelligence Predictions”**
 
 ---
 
 ## 📌 Research Background
 
-The performance of solar panels is strongly influenced by their orientation relative to the Sun. Conventional solar tracking systems rely on astronomical equations or predefined models, which may not fully capture local environmental variations.
+The performance of solar energy systems is highly dependent on the orientation of solar panels relative to the Sun. Conventional solar tracking systems typically rely on astronomical equations and deterministic models, which accurately describe the Sun’s position based on time and location but do not explicitly incorporate local environmental conditions.
 
-This research explores an alternative data-driven approach by utilizing environmental parameters—specifically temperature, humidity, and electrical current—acquired through an IoT system. Machine learning models are then employed to learn temporal patterns and correlations within the data to predict solar position parameters.
+This research explores a complementary approach by utilizing **environmental parameters**, specifically **temperature and humidity**, acquired through an IoT-based data acquisition system. These parameters are used as inputs for **machine learning models** to learn temporal patterns and correlations related to the Sun’s apparent position.
+
+The proposed system does not aim to replace astronomical models but to investigate the potential of **data-driven methods** as an alternative or supporting strategy for solar tracking optimization.
 
 ---
 
 ## 🎯 Research Objectives
 
-- To design an IoT-based system capable of acquiring temperature, humidity, and electrical current data in real time.
-- To develop a cloud-based data storage and visualization system for monitoring environmental conditions.
-- To implement and evaluate Long Short-Term Memory (LSTM) and Random Forest models for predicting solar altitude and azimuth angles.
-- To analyze the limitations of data-driven models compared to conventional astronomical approaches.
+- To design and implement an **IoT-based system** capable of acquiring temperature and humidity data in real time.
+- To develop a **data acquisition and storage pipeline** for environmental monitoring.
+- To implement **Artificial Intelligence models** (LSTM and Random Forest) for predicting solar altitude and azimuth angles.
+- To evaluate the performance and limitations of data-driven predictions compared to conventional astronomical approaches.
+- To demonstrate the integration of **instrumentation physics, IoT systems, and AI** in a solar tracking context.
 
 ---
 
@@ -30,27 +34,27 @@ This research explores an alternative data-driven approach by utilizing environm
 
 The research methodology consists of the following stages:
 
-1. **Data Acquisition**
-   - Environmental data (temperature, humidity, current) collected using sensors connected to an ESP32 microcontroller.
-   - Data transmitted via Wi-Fi to a cloud database in real time.
+### 1. Data Acquisition
+- Temperature and humidity data are collected using sensors connected to an **ESP32 microcontroller**.
+- Data are transmitted via Wi-Fi to a cloud-based database in near real time.
 
-2. **Data Storage and Visualization**
-   - Data stored in a cloud-based real-time database.
-   - Web-based dashboard developed for monitoring sensor readings and AI prediction results.
+### 2. Data Storage and Visualization
+- Environmental data are stored in a real-time database.
+- A **web-based dashboard** is developed to visualize sensor readings and AI prediction results.
 
-3. **Artificial Intelligence Modeling**
-   - **LSTM (Long Short-Term Memory):**  
-     Used to model temporal dependencies in time-series environmental data.
-   - **Random Forest:**  
-     Used to capture non-linear relationships between environmental parameters and solar angles.
+### 3. Artificial Intelligence Modeling
+- **Long Short-Term Memory (LSTM):**  
+  Used to model temporal dependencies in time-series environmental data.
+- **Random Forest:**  
+  Used to capture non-linear relationships between environmental parameters and solar position angles.
 
-4. **Prediction Targets**
-   - Solar altitude angle
-   - Solar azimuth angle
+### 4. Prediction Targets
+- Solar altitude angle
+- Solar azimuth angle
 
-5. **Evaluation**
-   - Model performance evaluated using statistical error metrics.
-   - Comparison between predictions based on local sensor data and historical weather data from Open-Meteo.
+### 5. Evaluation
+- Model performance is evaluated using statistical error metrics.
+- Predictions based on local IoT sensor data are compared with predictions based on historical weather data.
 
 ---
 
@@ -58,22 +62,51 @@ The research methodology consists of the following stages:
 
 The system consists of four main components:
 
-- **IoT Node**
-  - ESP32 microcontroller
-  - Temperature and humidity sensors
-  - Electrical current sensor
+### IoT Node
+- ESP32 microcontroller  
+- Temperature and humidity sensors  
+- Data acquisition and wireless transmission module  
 
-- **Cloud Infrastructure**
-  - Real-time database for sensor data and prediction results
+### Cloud Infrastructure
+- Real-time database for environmental data storage  
 
-- **AI Prediction Service**
-  - Python-based service for model inference
-  - LSTM and Random Forest models
+### AI Prediction Service
+- Python-based prediction service  
+- LSTM and Random Forest models for inference  
 
-- **Web Dashboard**
-  - Real-time visualization of sensor data
-  - Display of predicted solar altitude and azimuth
-  - Historical data querying based on timestamp
+### Web Dashboard
+- Visualization of temperature and humidity data  
+- Visualization of predicted solar altitude and azimuth  
+- CSV-based replay mode for simulation and demonstration  
+
+---
+
+## 📁 Repository Structure
+
+### `make_a_model.ipynb`
+- Jupyter Notebook used for developing, training, and evaluating AI models
+- Includes data preprocessing, feature engineering, and performance analysis
+- Serves as the primary experimentation environment for solar angle prediction
+
+### `backend/`
+- Contains Python scripts for model inference and prediction services
+- Handles data input, preprocessing during inference, and output generation
+- Designed to support integration with the web dashboard
+
+### `data/`
+- Contains datasets used throughout the research
+- Includes raw sensor data, processed datasets, and CSV files for dashboard replay
+- Supports reproducible experiments and offline visualization
+
+### `firmware/`
+- Contains firmware source code for the ESP32 microcontroller
+- Responsible for temperature and humidity data acquisition
+- Handles data transmission to the cloud database
+
+### `frontend/`
+- Contains source code for the web-based dashboard
+- Implemented using HTML, JavaScript, and CSS
+- Supports real-time visualization and CSV-based simulated streaming
 
 ---
 
@@ -81,72 +114,61 @@ The system consists of four main components:
 
 Two main data sources are used in this research:
 
-1. **Local Sensor Data**
+1. **IoT Sensor Data**
    - Temperature (°C)
    - Humidity (%)
-   - Electrical current (A)
-   - Timestamp (WIB / UTC+7)
+   - Timestamp (UTC+7)
 
 2. **Historical Weather Data**
-   - Obtained from Open-Meteo Historical Weather API
-   - Used as an alternative scenario for model training and evaluation
+   - Obtained from the **Open-Meteo Historical Weather API**
+   - Used as an alternative data source for model evaluation and comparison
 
-Only sample datasets are provided in this repository for demonstration purposes.
+Only sample datasets are included in this repository for demonstration purposes.
 
 ---
 
 ## ⚙️ Technologies Used
 
-- **Hardware**
-  - ESP32 Microcontroller
-  - Temperature & Humidity Sensor
-  - Electrical Current Sensor
+### Hardware
+- ESP32 Microcontroller  
+- Temperature and Humidity Sensor  
 
-- **Software**
-  - Python (data processing and AI models)
-  - TensorFlow / Keras (LSTM implementation)
-  - Scikit-learn (Random Forest)
-  - JavaScript, HTML, CSS (Web dashboard)
-  - Firebase Realtime Database
+### Software
+- Python (data processing and AI modeling)
+- TensorFlow / Keras (LSTM implementation)
+- Scikit-learn (Random Forest)
+- JavaScript, HTML, CSS (Web dashboard)
+- Firebase Realtime Database
 
 ---
 
-## 🚀 How to Run the System (Overview)
+## 🚀 System Usage (Overview)
 
-1. Upload the firmware to the ESP32 to start data acquisition.
-2. Configure environment variables for database access.
-3. Run the Python prediction service to enable AI inference.
-4. Open the web dashboard to monitor sensor data and prediction results.
+1. Deploy the firmware to the ESP32 to start environmental data acquisition.
+2. Configure database credentials for cloud storage.
+3. Run the AI prediction service for model inference.
+4. Open the web dashboard to visualize sensor data and prediction results.
 
-Detailed step-by-step instructions are provided in the `docs/` directory.
+Detailed technical instructions are provided in the respective subdirectories.
 
 ---
 
 ## ⚠️ Limitations
 
-- The AI models learn correlations from environmental data rather than using direct astronomical equations.
-- Reconstruction of solar azimuth and altitude is less accurate compared to Solar Position Algorithm (SPA) calculations.
-- LSTM models require an initial sequence of data before producing stable predictions.
-- Prediction accuracy depends on data quality, sampling interval, and environmental variability.
+- The AI models learn empirical correlations from environmental data rather than relying on deterministic astronomical equations.
+- Reconstruction of solar altitude and azimuth is less accurate than physics-based Solar Position Algorithm (SPA) calculations.
+- LSTM models require an initial data sequence before stable predictions can be produced.
+- Model performance depends on data quality, sampling interval, and environmental variability.
 
 ---
 
 ## 📚 Academic Note
 
 This repository is intended for educational and research purposes.  
-The implementation emphasizes the integration of physics-based instrumentation, IoT systems, and machine learning techniques rather than replacing established astronomical models.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.  
-You are free to use, modify, and distribute this code with proper attribution.
+The work emphasizes **system integration and instrumentation physics** combined with **data-driven modeling**, rather than replacing established astronomical methods.
 
 ---
 
 ## 👤 Author
 
 **Abdulhaqi Hamdi**  
-Undergraduate Student in Physics  
-Universitas Indonesia
