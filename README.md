@@ -1,86 +1,66 @@
 # IoT-Based Temperature and Humidity Data Acquisition System for Solar Tracking Optimization Using Artificial Intelligence
 
-This repository contains the implementation of an Internet of Things (IoT)-based environmental data acquisition system and Artificial Intelligence (AI) models to predict a sun path.
-  
-The system integrates real-time sensor data, cloud-based storage, machine learning models, and a web-based dashboard to predict the Sun’s altitude and azimuth angles.
+An IoT-based environmental monitoring system that collects temperature and humidity data and uses Artificial Intelligence (AI) models to predict the Sun's altitude and azimuth angles base on environmental data. This project combines **IoT data acquisition, cloud data storage, machine learning, and web-based visualization** into an integrated system.
 
-This work is a documentation of my undergraduate physics thesis:
-
-**“IoT-Based Temperature and Humidity Data Acquisition System for Steering the Position of Solar Panels Based on Artificial Intelligence Predictions”**
+The project was originally developed as part of my undergraduate thesis in Physics at Universitas Indonesia.
 
 ---
 
-## 📌 Research Background
+## 🌐 Project Overview
 
-The performance of solar energy systems is highly dependent on the orientation of solar panels relative to the Sun. Conventional solar tracking systems typically rely on astronomical equations and deterministic models, which accurately describe the Sun’s position based on time and location but do not explicitly incorporate local environmental conditions.
+Solar panels can produce different amounts of energy depending on their orientation relative to the Sun. Solar tracking systems are commonly used to adjust the panel's position throughout the day.
 
-This research explores a complementary approach by utilizing **environmental parameters**, specifically **temperature and humidity**, acquired through an IoT-based data acquisition system. These parameters are used as inputs for **machine learning models** to learn temporal patterns and correlations related to the Sun’s apparent position.
+This project explores how **environmental data collected through an IoT system** can be combined with machine learning to estimate the Sun's apparent position.
 
-The proposed system does not aim to replace astronomical models but to investigate the potential of **data-driven methods** as an alternative or supporting strategy for solar tracking optimization.
+The system collects:
 
----
+- 🌡️ Temperature
+- 💧 Humidity
+- 🕒 Timestamp
 
-## 🎯 Research Objectives
+The collected data are processed and used by machine learning models to predict:
 
-- To design and implement an **IoT-based system** capable of acquiring temperature and humidity data in real time.
-- To develop a **data acquisition and storage pipeline** for environmental monitoring.
-- To implement **Artificial Intelligence models** (LSTM and Random Forest) for predicting solar altitude and azimuth angles.
-- To evaluate the performance and limitations of data-driven predictions compared to conventional astronomical approaches.
-- To demonstrate the integration of **instrumentation physics, IoT systems, and AI** in a solar tracking context.
+- ☀️ Solar altitude
+- 🧭 Solar azimuth
 
----
+The results can then be visualized through a web-based dashboard.
 
-## 🧠 Methodology Overview
-
-The research methodology consists of the following stages:
-
-### 1. Data Acquisition
-- Temperature and humidity data are collected using sensors connected to an **ESP32 microcontroller**.
-- Data are transmitted via Wi-Fi to a cloud-based database in near real time.
-
-### 2. Data Storage and Visualization
-- Environmental data are stored in a real-time database.
-- A **web-based dashboard** is developed to visualize sensor readings and AI prediction results.
-
-### 3. Artificial Intelligence Modeling
-- **Long Short-Term Memory (LSTM):**  
-  Used to model temporal dependencies in time-series environmental data.
-- **Random Forest:**  
-  Used to capture non-linear relationships between environmental parameters and solar position angles.
-
-### 4. Prediction Targets
-- Solar altitude angle
-- Solar azimuth angle
-
-### 5. Evaluation
-- Model performance is evaluated using statistical error metrics.
-- Predictions based on local IoT sensor data are compared with predictions based on historical weather data.
+The project is primarily intended as a demonstration of how **physical sensing, IoT systems, data processing, and machine learning** can be combined into a single application.
 
 ---
 
-## 🏗️ System Architecture
+## 🔄 How the System Works
 
-The system consists of four main components:
+The overall workflow can be summarized as:
 
-### IoT Node
-- ESP32 microcontroller  
-- Temperature and humidity sensors  
-- Data acquisition and wireless transmission module  
-
-### Cloud Infrastructure
-- Real-time database for environmental data storage  
-
-### AI Prediction Service
-- Python-based prediction service  
-- LSTM and Random Forest models for inference  
-
-### Web Dashboard
-- Visualization of temperature and humidity data  
-- Visualization of predicted solar altitude and azimuth  
-- CSV-based replay mode for simulation and demonstration  
-
----
-
+```text
+Environmental Sensors (DHT11)
+        │
+        ▼
+      ESP32
+        │
+        ▼
+  Data Transmission
+        │
+        ▼
+ Cloud / Data Storage
+        │
+        ▼
+ Data Processing
+        │
+        ▼
+ AI Prediction Models
+   ┌────┴────┐
+   ▼         ▼
+  LSTM   Random Forest
+   │         │
+   └────┬────┘
+        ▼
+Solar Altitude & Azimuth
+        │
+        ▼
+   Web Dashboard
+```
 ## 📁 Repository Structure
 
 ### `make_a_model.ipynb`
@@ -101,7 +81,7 @@ The system consists of four main components:
 ### `firmware/`
 - Contains firmware source code for the ESP32 microcontroller
 - Responsible for temperature and humidity data acquisition
-- Handles data transmission to the cloud database
+- Handles data transmission from ESP32 to the cloud database
 
 ### `frontend/`
 - Contains source code for the web-based dashboard
